@@ -5,7 +5,7 @@ from awsglue.dynamicframe import DynamicFrame
 from pyspark.context import SparkContext
 from awsglue.context import GlueContext
 from awsglue.job import Job
-from pyspark.sql.functions import *
+from pyspark.sql.functions import concat_ws,sha2
 from pyspark.sql.functions import lit
 from datetime import datetime,timedelta,date
 from pytz import timezone
@@ -42,7 +42,7 @@ def read_data():
         old_df=read_df
     except Exception as e:
         logger.error(f"Exception while connecting to database table {table_name} {e}")
-    return old_df
+    return read_df
 
 
 #generating SHA    
@@ -51,7 +51,6 @@ def generate_sha(str):
 
 # Taking backup of target data
 old_project_scorecard_df=read_data()
-print("READING DATA !")
 
 # Reading "project_scorecard_report" table data from catalog
 project_scorecard_report_table = glueContext.create_dynamic_frame.from_catalog(
@@ -63,7 +62,6 @@ applymapping1 = ApplyMapping.apply( frame = project_scorecard_report_table , map
 
 # Converting dynamic frames to DF
 project_scorecard_report_table_df = applymapping1.toDF()
-project_scorecard_report_table_df.head()
 
 #creating SHA
 column_list=(project_scorecard_report_table_df.columns)
@@ -71,7 +69,6 @@ project_scorecard_report_table_df = project_scorecard_report_table_df.withColumn
 project_scorecard_report_table_df = project_scorecard_report_table_df.withColumn('project_scorecard_sha',generate_sha(project_scorecard_report_table_df.concated_cols))
 project_scorecard_report_table_df = project_scorecard_report_table_df.drop("concated_cols")
 
-print("DONE with SHA Generation !")
 
 config_df = project_scorecard_report_table_df.join(old_project_scorecard_df,on=["project_id"],how='leftanti')
 config_df_inserted_date =config_df.withColumn('insert_date',lit(datetime.now(timezone("Asia/Kolkata"))))
