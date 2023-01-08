@@ -34,6 +34,36 @@ table_vertical_mapping = [
                               "report_vertical":"US Tech/BPO/Payments/Retail",
                               "table_name":"us_tech_bpo_payments_retail_timesheet"
                            }
+                           ,
+                           {
+                              "report_vertical":"APAC Bank/Payments/BPO/Tech/Retail",
+                              "table_name":"apac_bank_payments_bpo_tech_retail_timesheet"
+                           }
+                           ,
+                           {
+                              "report_vertical":"Bank",
+                              "table_name":"bank_timesheet"
+                           }
+                           ,
+                           {
+                              "report_vertical":"SOC-ISO",
+                              "table_name":"soc_iso_timesheet"
+                           },
+                           {
+                              "report_vertical":"HITRUST",
+                              "table_name":"hittrust_timesheet"
+                           }
+                           ,
+                           {
+                              "report_vertical":"Pro Services",
+                              "table_name":"pro_services_timesheet"
+                           }
+                           ,
+                           {
+                              "report_vertical":"US CSP",
+                              "table_name":"us_csp_timesheet"
+                           }
+                           
                         ]
 
 def truncate_table(table_name):
